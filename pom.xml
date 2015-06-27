@@ -13,8 +13,10 @@
 		<jetty.version>8.1.16.v20140903</jetty.version>
 		<junit.version>3.8.1</junit.version>
 		<jsp.glassfish.version>9.1.02.B04.p0</jsp.glassfish.version>
+		<maven.compiler.version>2.1</maven.compiler.version>
+		<jre.version>1.6</jre.version>
 	</properties>
-	
+
 	<profiles>
 		<profile>
 			<id>dev</id>
@@ -65,7 +67,7 @@
 			<artifactId>jsp-2.1-glassfish</artifactId>
 			<version>${jsp.glassfish.version}</version>
 		</dependency>
-		
+
 		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -86,6 +88,15 @@
 							<port>8080</port>
 						</connector>
 					</connectors>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.version}</version>
+				<configuration>
+					<source>${jre.version}</source>
+					<target>${jre.version}</target>
 				</configuration>
 			</plugin>
 		</plugins>
