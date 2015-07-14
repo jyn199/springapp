@@ -3,6 +3,10 @@ package com.app.demo;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,13 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.app.utils.EncodingUtils;
 
 @Controller
 @RequestMapping("/")
@@ -54,14 +55,21 @@ public class AppController {
 	}
 
 	@RequestMapping(value = "retModelMap")
-	public ModelMap retModelMap(@RequestParam String test,
+	public ModelMap retModelMap(@RequestParam(value="test1", required=false) String test,
 			HttpServletRequest request, HttpServletResponse response)
 			throws UnsupportedEncodingException {
 		ModelMap map = new ModelMap();
 //		map.put("demo",
 //				new String(test.getBytes(EncodingUtils.getEncoding(test)),
 //						"UTF-8"));
+		List<String> l = new ArrayList<String>();
+		l.add(test);
+		Map m = new HashMap();
 		map.put("demo", test);
+		map.put("list", l);
+		m.put("demo", test);
+		m.put("list", l);
+		map.put("map", m);
 		return map;
 	}
 
