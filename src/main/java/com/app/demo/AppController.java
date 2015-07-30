@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 @Controller
+@Scope(value="prototype")
 @RequestMapping("/")
 @SessionAttributes({"demo"})
 public class AppController {
@@ -89,6 +93,19 @@ public class AppController {
 		} finally {
 			out.close();
 		}
+	}
+	
+	@RequestMapping(value = "context")
+	public ModelAndView getContext(HttpServletRequest request, HttpServletResponse response) {
+		WebApplicationContext wac = (WebApplicationContext)request.getSession().getServletContext().getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+		WebApplicationContext wac1 = RequestContextUtils.getWebApplicationContext(request);
+		//scope配置，返回的结果不同
+		AppController c = (AppController)wac.getBean("appController");
+		AppController c1 = wac1.getBean(AppController.class);
+		ModelAndView mav = new ModelAndView("app/context");
+		mav.addObject("c", c);
+		mav.addObject("c1", c1);
+		return mav;
 	}
 
 }
